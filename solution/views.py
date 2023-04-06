@@ -7,6 +7,11 @@ from .serializers import EmployeeSerializer, TimesheetSerializer, PayrollSeriali
 from .models import Employee, Timesheet, Payroll
 
 
+@api_view(['GET'])
+def alltodo(request):
+    record=Employee.objects.all()
+    info=EmployeeSerializer(record, many=True)
+    return Response(info.data)
 
 
 @api_view(['POST'])
@@ -30,6 +35,9 @@ def modify_employee(request, employee_id):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
+
+
+
 
 
 @api_view(['POST'])
@@ -99,18 +107,7 @@ def generate_payslip(request, employee_id):
     return Response(serializer.data)
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def generate_report(request):
-#     payroll = Payroll.objects.all()
-#     report_data = {}
 
-#     for p in payroll:
-#         employee = p.employee.name
-#         amount = p.amount
-
-#         if employee not in report_data:
-#             report_data[employee] =
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
